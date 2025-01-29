@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"context"
 	"ChitChat/internal/config"
 	"ChitChat/internal/model"
+	"context"
 )
 
 // InsertUser inserts a new user into the MongoDB database
@@ -18,4 +18,13 @@ func InsertUser(user *model.User) error {
 	}
 
 	return nil
+}
+
+func CheckIfExists(user *model.User) string {
+	collection := config.GetCollection("ChitChat", "users")
+	err := collection.FindOne(context.Background(), user)
+	if err != nil {
+		return "User Logged in successfully"
+	}
+	return "User does not exist! Please sign up"
 }
